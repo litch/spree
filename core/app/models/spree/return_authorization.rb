@@ -60,7 +60,7 @@ module Spree
 
     private
       def must_have_shipped_units
-        errors.add(:order, I18n.t(:has_no_shipped_units)) if order.nil? || !order.inventory_units.any?(&:shipped?)
+        errors.add(:order, Spree.t(:has_no_shipped_units)) if order.nil? || !order.inventory_units.any?(&:shipped?)
       end
 
       def generate_number
@@ -76,7 +76,7 @@ module Spree
 
       def process_return
         inventory_units.each &:return!
-        credit = Adjustment.new(:amount => amount.abs * -1, :label => I18n.t(:rma_credit))
+        credit = Adjustment.new(:amount => amount.abs * -1, :label => Spree.t(:rma_credit))
         credit.source = self
         credit.adjustable = order
         credit.save

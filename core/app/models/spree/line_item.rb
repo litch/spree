@@ -10,7 +10,7 @@ module Spree
     before_validation :copy_price
 
     validates :variant, :presence => true
-    validates :quantity, :numericality => { :only_integer => true, :message => I18n.t('validation.must_be_int'), :greater_than => -1 }
+    validates :quantity, :numericality => { :only_integer => true, :message => Spree.t('validation.must_be_int'), :greater_than => -1 }
     validates :price, :numericality => true
     validate :stock_availability
     validate :quantity_no_less_than_shipped
@@ -100,7 +100,7 @@ module Spree
 
       def ensure_not_shipped
         if order.try(:inventory_units).to_a.any?{ |unit| unit.variant_id == variant_id && unit.shipped? }
-          errors.add :base, I18n.t('validation.cannot_destory_line_item_as_inventory_units_have_shipped')
+          errors.add :base, Spree.t('validation.cannot_destory_line_item_as_inventory_units_have_shipped')
           return false
         end
       end
@@ -108,13 +108,13 @@ module Spree
       # Validation
       def stock_availability
         return if sufficient_stock?
-        errors.add(:quantity, I18n.t('validation.exceeds_available_stock'))
+        errors.add(:quantity, Spree.t('validation.exceeds_available_stock'))
       end
 
       def quantity_no_less_than_shipped
         already_shipped = order.shipments.reduce(0) { |acc, s| acc + s.inventory_units.shipped.where(:variant_id => variant_id).count }
         unless quantity >= already_shipped
-          errors.add(:quantity, I18n.t('validation.cannot_be_less_than_shipped_units'))
+          errors.add(:quantity, Spree.t('validation.cannot_be_less_than_shipped_units'))
         end
       end
   end

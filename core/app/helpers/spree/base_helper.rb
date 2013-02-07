@@ -36,10 +36,11 @@ module Spree
       # We shouldn't show out of stock if the product is infact in stock
       # or when we're not allowing backorders.
       unless v.in_stock?
+        out_of_stock = Spree.t(:out_of_stock)
         list = if options[:include_style]
-          content_tag(:span, "(#{t(:out_of_stock)}) #{list}", :class => 'out-of-stock')
+          content_tag(:span, "(#{out_of_stock}) #{list}", :class => 'out-of-stock')
         else
-          "#{t(:out_of_stock)} #{list}"
+          "#{out_of_stock} #{list}"
         end
       end
 
@@ -92,13 +93,13 @@ module Spree
     def breadcrumbs(taxon, separator="&nbsp;&raquo;&nbsp;")
       return "" if current_page?("/") || taxon.nil?
       separator = raw(separator)
-      crumbs = [content_tag(:li, link_to(t(:home) , root_path) + separator)]
+      crumbs = [content_tag(:li, link_to(Spree.t(:home) , root_path) + separator)]
       if taxon
-        crumbs << content_tag(:li, link_to(t(:products) , products_path) + separator)
+        crumbs << content_tag(:li, link_to(Spree.t(:products) , products_path) + separator)
         crumbs << taxon.ancestors.collect { |ancestor| content_tag(:li, link_to(ancestor.name , seo_url(ancestor)) + separator) } unless taxon.ancestors.empty?
         crumbs << content_tag(:li, content_tag(:span, link_to(taxon.name , seo_url(taxon))))
       else
-        crumbs << content_tag(:li, content_tag(:span, t(:products)))
+        crumbs << content_tag(:li, content_tag(:span, Spree.t(:products)))
       end
       crumb_list = content_tag(:ul, raw(crumbs.flatten.map{|li| li.mb_chars}.join), :class => 'inline')
       content_tag(:nav, crumb_list, :id => 'breadcrumbs', :class => 'sixteen columns')
@@ -127,7 +128,7 @@ module Spree
       end
 
       countries.collect do |country|
-        country.name = I18n.t(country.iso, :scope => 'country_names', :default => country.name)
+        country.name = Spree.t(country.iso, :scope => 'country_names', :default => country.name)
         country
       end.sort { |a, b| a.name <=> b.name }
     end

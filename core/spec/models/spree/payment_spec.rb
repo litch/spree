@@ -402,7 +402,7 @@ describe Spree::Payment do
       end
 
       specify do
-        lambda { payment.process! }.should raise_error(Spree::Core::GatewayError, I18n.t(:payment_processing_failed))
+        lambda { payment.process! }.should raise_error(Spree::Core::GatewayError, Spree.t(:payment_processing_failed))
       end
     end
   end

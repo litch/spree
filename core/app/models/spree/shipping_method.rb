@@ -15,7 +15,7 @@ module Spree
                     :match_none, :match_one, :match_all
 
     def adjustment_label
-      I18n.t(:shipping)
+      Spree.t(:shipping)
     end
 
     def available?(order, display_on = nil)

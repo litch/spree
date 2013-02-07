@@ -131,12 +131,12 @@ module Spree
       end
 
       def description_for_shipping_charge
-        "#{I18n.t(:shipping)} (#{shipping_method.name})"
+        "#{Spree.t(:shipping)} (#{shipping_method.name})"
       end
 
       def validate_shipping_method
         unless shipping_method.nil?
-          errors.add :shipping_method, I18n.t(:is_not_available_to_shipment_address) unless shipping_method.zone.include?(address)
+          errors.add :shipping_method, Spree.t(:is_not_available_to_shipment_address) unless shipping_method.zone.include?(address)
         end
       end
 
